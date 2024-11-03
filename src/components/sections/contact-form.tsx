@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { contactConfig } from "@/config/contact";
+import { emailConfig } from "@/config/email";
+import emailjs from "@emailjs/browser";
 
 const formSchema = z.object({
   name: z.string().min(2, "Naam moet minimaal 2 karakters bevatten"),
@@ -17,6 +19,7 @@ type FormData = z.infer<typeof formSchema>;
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -29,31 +32,28 @@ export function ContactForm() {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
+
     try {
-      // Send email using emailjs
-      await fetch(`https://api.emailjs.com/api/v1.0/email/send`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      await emailjs.send(
+        emailConfig.serviceId,
+        emailConfig.templateId,
+        {
+          from_name: data.name,
+          from_email: data.email,
+          phone_number: data.phone,
+          message: data.message,
+          to_name: contactConfig.companyName,
+          reply_to: data.email,
         },
-        body: JSON.stringify({
-          user_id: process.env.NEXT_PUBLIC_EMAILJS_USER_ID,
-          service_id: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-          template_id: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-          template_params: {
-            to_email: contactConfig.email,
-            from_name: data.name,
-            from_email: data.email,
-            phone: data.phone,
-            message: data.message,
-          },
-        }),
-      });
+        emailConfig.publicKey
+      );
       
       setSubmitSuccess(true);
       reset();
     } catch (error) {
       console.error("Error sending email:", error);
+      setSubmitError("Er is iets misgegaan bij het versturen van uw bericht. Probeer het later opnieuw of neem telefonisch contact op.");
     } finally {
       setIsSubmitting(false);
     }
@@ -169,6 +169,12 @@ export function ContactForm() {
                   Bedankt voor uw bericht! We nemen zo spoedig mogelijk contact met
                   u op.
                 </p>
+              </div>
+            )}
+
+            {submitError && (
+              <div className="rounded-md bg-red-50 p-4">
+                <p className="text-sm text-red-600">{submitError}</p>
               </div>
             )}
           </form>
