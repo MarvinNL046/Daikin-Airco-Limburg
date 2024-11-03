@@ -1,28 +1,26 @@
 export const images = {
   hero: {
-    main: "/images/daikin-stylish-white.webp",
+    main: "/images/daikin-stylish-wit.webp",
     alt: "Daikin Stylish airconditioner in modern interieur"
   },
   products: {
     stylish: {
-      white: "/images/daikin-stylish-white.webp",
-      black: "/images/daikin-stylish-black.webp",
+      white: "/images/daikin-stylish-wit.webp",
+      black: "/images/daikin-stylish-zwart.webp",
       silver: "/images/daikin-stylish-silver.webp",
       blackwood: "/images/daikin-stylish-blackwood.webp",
       alt: "Daikin Stylish airconditioner"
     },
     emura: {
-      main: "/images/daikin-emura.webp",
+      white: "/images/daikin-emura-wit.webp",
+      black: "/images/daikin-emura-zwart.webp",
+      silver: "/images/daikin-emura-zilver.webp",
       alt: "Daikin Emura airconditioner"
     },
     perfera: {
-      main: "/images/daikin-perfera.webp",
+      white: "/images/daikin-perfera-wit.webp",
       alt: "Daikin Perfera airconditioner"
     }
-  },
-  installation: {
-    process: "/images/installation.webp",
-    alt: "Professionele airco installatie"
   }
 } as const;
 
@@ -53,19 +51,19 @@ export const productImages: ProductImage[] = [
     description: "Elegant design in zilverkleur"
   },
   {
-    src: images.products.stylish.blackwood,
-    alt: "Daikin Stylish Blackwood",
-    title: "Daikin Stylish Blackwood",
-    description: "Luxe design in blackwood finish"
-  },
-  {
-    src: images.products.emura.main,
-    alt: "Daikin Emura",
+    src: images.products.emura.white,
+    alt: "Daikin Emura Wit",
     title: "Daikin Emura",
     description: "Premium design airconditioner"
   },
   {
-    src: images.products.perfera.main,
+    src: images.products.emura.black,
+    alt: "Daikin Emura Zwart",
+    title: "Daikin Emura Black",
+    description: "Luxe design in zwart"
+  },
+  {
+    src: images.products.perfera.white,
     alt: "Daikin Perfera",
     title: "Daikin Perfera",
     description: "Krachtige en efficiënte airconditioner"
