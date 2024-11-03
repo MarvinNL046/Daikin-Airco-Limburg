@@ -1,5 +1,3 @@
-"use client";
-
 import { Wind } from "lucide-react";
 import { images } from "@/config/images";
 import { contactConfig } from "@/config/contact";
@@ -14,9 +12,9 @@ export function Hero() {
               <Wind className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               <a 
                 href={`tel:+31${contactConfig.phoneClean}`} 
-                className="text-xs sm:text-sm font-semibold text-primary hover:text-primary-dark"
+                className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-full text-sm font-semibold hover:bg-primary-dark transition-colors"
               >
-                {contactConfig.phone}
+                Bel {contactConfig.phone}
               </a>
             </div>
             <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900">
@@ -29,13 +27,13 @@ export function Hero() {
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a
                 href="#contact"
-                className="w-full sm:w-auto gradient-blue rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity"
+                className="w-full sm:w-auto bg-primary rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark transition-colors"
               >
                 Vrijblijvende offerte
               </a>
               <a
                 href={`tel:+31${contactConfig.phoneClean}`}
-                className="w-full sm:w-auto rounded-lg border border-primary px-6 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
+                className="w-full sm:w-auto rounded-lg border-2 border-primary px-6 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
               >
                 Bel {contactConfig.phone}
               </a>
