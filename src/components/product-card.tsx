@@ -23,7 +23,7 @@ export function ProductCard({ product }: ProductCardProps) {
           href="#contact"
           className="mt-4 inline-flex items-center text-primary hover:text-primary-dark"
         >
-          Meer informatie
+          Offerte aanvragen
           <ArrowRight className="ml-2 h-4 w-4" />
         </a>
       </div>
