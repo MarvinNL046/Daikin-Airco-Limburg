@@ -13,8 +13,8 @@ export function CapacityCalculator() {
   const [result, setResult] = useState<CapacityResult | null>(null);
 
   const calculateCapacity = () => {
-    // Basis berekening: ~50W per m² voor koeling
-    let baseCapacity = area * 50;
+    // Basis berekening: ~100W per m² voor verwarming
+    let baseCapacity = area * 100;
     
     // Aanpassingen op basis van kamertype
     const multipliers = {
@@ -30,13 +30,13 @@ export function CapacityCalculator() {
     const minKw = Math.round((baseCapacity * 0.8) / 100) / 10;
     const maxKw = Math.round((baseCapacity * 1.2) / 100) / 10;
     
-    // Bepaal aanbeveling
+    // Bepaal aanbeveling (hogere capaciteit voor adequate verwarming)
     let recommendation = "";
-    if (maxKw <= 2.5) {
-      recommendation = "Daikin Stylish 2.0kW";
-    } else if (maxKw <= 3.5) {
+    if (area <= 25) {
+      recommendation = "Daikin Stylish 2.5kW";
+    } else if (area <= 35) {
       recommendation = "Daikin Stylish 3.5kW";
-    } else if (maxKw <= 5.0) {
+    } else if (area <= 50) {
       recommendation = "Daikin Stylish 5.0kW";
     } else {
       recommendation = "Daikin Stylish Multi-split systeem";
@@ -104,6 +104,9 @@ export function CapacityCalculator() {
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-medium text-primary mb-2">Onze aanbeveling:</p>
               <p className="text-gray-700 mb-4">{result.recommendation}</p>
+              <p className="text-sm text-gray-500 mb-4">
+                * Deze berekening houdt rekening met zowel koeling als verwarming. Voor optimale verwarming adviseren we een iets hogere capaciteit.
+              </p>
               <a
                 href="#contact"
                 className="inline-flex items-center text-primary hover:text-primary-dark font-medium"
