@@ -8,6 +8,11 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
+      {product.highlight && (
+        <div className="absolute top-4 right-4 z-10 bg-primary text-white px-4 py-1 rounded-full text-sm font-medium">
+          {product.highlight}
+        </div>
+      )}
       <div className="aspect-[4/3] relative">
         <img
           src={product.src}
@@ -18,10 +23,13 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
-        <p className="text-gray-600">{product.description}</p>
+        <p className="text-gray-600 mb-2">{product.description}</p>
+        {product.price && (
+          <p className="text-primary font-semibold mb-4">{product.price}</p>
+        )}
         <a
           href="#contact"
-          className="mt-4 inline-flex items-center text-primary hover:text-primary-dark"
+          className="inline-flex items-center text-primary hover:text-primary-dark"
         >
           Offerte aanvragen
           <ArrowRight className="ml-2 h-4 w-4" />
