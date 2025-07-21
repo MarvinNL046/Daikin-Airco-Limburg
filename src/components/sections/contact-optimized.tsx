@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
 import { Phone, Mail, MapPin, Clock, MessageSquare, Send, CheckCircle } from "lucide-react";
 import { contactConfig } from "@/config/contact";
-import emailjs from "@emailjs/browser";
-import { emailConfig } from "@/config/email";
+import { sendEmail } from "@/utils/email";
+import { trackFormSubmission, trackPixelFormSubmission } from "@/utils/analytics";
+import toast, { Toaster } from "react-hot-toast";
 
 export function ContactOptimized() {
+  const navigate = useNavigate();
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -17,41 +20,55 @@ export function ContactOptimized() {
     email: "",
     phone: "",
     message: "",
+    city: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      await emailjs.send(
-        emailConfig.serviceId,
-        emailConfig.templateId,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-          to_email: contactConfig.email,
-        },
-        emailConfig.publicKey
-      );
+      await sendEmail({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        city: formData.city || 'Limburg',
+      });
 
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", phone: "", message: "" });
+      // Track analytics
+      trackFormSubmission('contact_optimized', true);
+      trackPixelFormSubmission('contact_optimized', true);
+      
+      // Show success message
+      toast.success('Bericht succesvol verzonden!');
+      
+      // Reset form
+      setFormData({ name: "", email: "", phone: "", message: "", city: "" });
+      
+      // Redirect to thank you page after a short delay
+      setTimeout(() => {
+        navigate('/tot-snel');
+      }, 1000);
     } catch (error) {
       console.error("Error sending email:", error);
-      setSubmitStatus("error");
+      
+      // Track failed submission
+      trackFormSubmission('contact_optimized', false);
+      trackPixelFormSubmission('contact_optimized', false);
+      
+      toast.error('Er is iets misgegaan. Probeer het later opnieuw.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="contact" className="py-20 bg-gray-50">
+    <>
+      <Toaster position="top-center" />
+      <section id="contact" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -243,18 +260,6 @@ export function ContactOptimized() {
                   </>
                 )}
               </button>
-
-              {submitStatus === "success" && (
-                <div className="bg-green-50 text-green-800 p-4 rounded-lg">
-                  Bedankt! We nemen binnen 24 uur contact met u op.
-                </div>
-              )}
-
-              {submitStatus === "error" && (
-                <div className="bg-red-50 text-red-800 p-4 rounded-lg">
-                  Er ging iets mis. Bel ons op {contactConfig.phone}.
-                </div>
-              )}
             </form>
 
             {/* Trust Indicators */}
@@ -278,5 +283,6 @@ export function ContactOptimized() {
         </div>
       </div>
     </section>
+    </>
   );
 }
