@@ -26,10 +26,12 @@ export function Hero() {
             </p>
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a
-                href="#contact"
+                href="https://afspraken.staycoolairco.nl/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto bg-primary rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark transition-colors"
               >
-                Vrijblijvende offerte
+                Plan uw afspraak online
               </a>
               <a
                 href={`tel:+31${contactConfig.phoneClean}`}

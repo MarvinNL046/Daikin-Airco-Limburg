@@ -24,6 +24,7 @@ export function Navbar() {
     { href: "/#products", label: "Producten", isHashLink: true },
     { href: "/#services", label: "Diensten", isHashLink: true },
     { href: "/werkgebied", label: "Werkgebied", isHashLink: false },
+    { href: "https://afspraken.staycoolairco.nl/", label: "Afspraak maken", isHashLink: false, isExternal: true },
     { href: "/#contact", label: "Contact", isHashLink: true },
   ];
 
@@ -75,24 +76,40 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                onClick={(e) => handleNavClick(e, link)}
-                className={`font-medium transition-colors ${
-                  isScrolled
-                    ? "text-gray-700 hover:text-orange-500"
-                    : "text-white hover:text-orange-400"
-                } ${
-                  location.pathname === link.href.split('#')[0]
-                    ? isScrolled
-                      ? "text-orange-500"
-                      : "text-orange-400"
-                    : ""
-                }`}
-              >
-                {link.label}
-              </Link>
+              link.isExternal ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`font-medium transition-colors ${
+                    isScrolled
+                      ? "text-gray-700 hover:text-orange-500"
+                      : "text-white hover:text-orange-400"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={(e) => handleNavClick(e, link)}
+                  className={`font-medium transition-colors ${
+                    isScrolled
+                      ? "text-gray-700 hover:text-orange-500"
+                      : "text-white hover:text-orange-400"
+                  } ${
+                    location.pathname === link.href.split('#')[0]
+                      ? isScrolled
+                        ? "text-orange-500"
+                        : "text-orange-400"
+                      : ""
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
             
             {/* CTA Button */}
@@ -129,21 +146,34 @@ export function Navbar() {
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
               {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={(e) => {
-                    handleNavClick(e, link);
-                    setIsOpen(false);
-                  }}
-                  className={`block py-2 font-medium transition-colors ${
-                    location.pathname === link.href.split('#')[0]
-                      ? "text-orange-500"
-                      : "text-gray-700 hover:text-orange-500"
-                  }`}
-                >
-                  {link.label}
-                </Link>
+                link.isExternal ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsOpen(false)}
+                    className="block py-2 font-medium transition-colors text-gray-700 hover:text-orange-500"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={(e) => {
+                      handleNavClick(e, link);
+                      setIsOpen(false);
+                    }}
+                    className={`block py-2 font-medium transition-colors ${
+                      location.pathname === link.href.split('#')[0]
+                        ? "text-orange-500"
+                        : "text-gray-700 hover:text-orange-500"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
               
               {/* Mobile CTA */}
